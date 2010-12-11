@@ -35,7 +35,7 @@ define("CR_UI_REQUEST_RETURNURL", "http://" . $_SERVER['HTTP_HOST']  . dirname($
       Reservation start time (yyyy-mm-dd hh:mm, or blank for ASAP): <input type="text" name="begins"></br>
       Reservation duration (minutes, or blank for indefinitely): <input type="text" name="duration"></br>
       Your public key (for SSH access):<br>
-      <textarea></textarea><br>
+      <textarea name="publickey"></textarea><br>
       <input type="submit">
     </form>
   </body>
