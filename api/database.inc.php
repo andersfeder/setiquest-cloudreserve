@@ -3,9 +3,9 @@
 require_once "config.inc.php";
 
 // Connecting, selecting database
-$cr_db_link = mysql_connect($cr_db_host, $cr_db_username, $cr_db_password)
+$cr_db_link = mysql_connect(CR_DB_HOST, CR_DB_USERNAME, CR_DB_PASSWORD)
     or die('Could not connect: ' . mysql_error());
-mysql_select_db($cr_db_database)
+mysql_select_db(CR_DB_DATABASE)
     or die('Could not select database');
 
 // Create tables if they don't already exist
