@@ -19,7 +19,7 @@ if ($return_url = @$_POST['return']) {
   }
 } else {
   function return_error($message) {
-    print_error("$message");
+    print_error($message);
   }
 }
 
@@ -65,7 +65,7 @@ if ($begins = @$_POST['begins'])
     if ($begins < time())
       return_error("Reservation must begin in the future.");
   } else {
-    return_error("Reservation must be a time or blank.");
+    return_error("Reservation start time must be a time or blank.");
   }
 
 if (strlen($duration = @$_POST['duration']))
