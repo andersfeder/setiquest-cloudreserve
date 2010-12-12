@@ -76,15 +76,25 @@ if (strlen($duration = @$_POST['duration']))
     return_error("Reservation duration must be a integer or blank.");
   }
 
-echo "Validated.";
+if (strlen($includes = trim(@$_POST['includes'])))
+  foreach (explode("\n", $includes) as $lineno => $line)
+    if (!filter_var(trim($line), FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED & FILTER_FLAG_HOST_REQUIRED))
+      return_error("Boot script must be an URL (line $lineno).");
+
+// Validation finished.
+// Insert request into database.
 
 /*
-$query = sprintf("INSERT INTO cr_requests (owner,) ",
-    mysql_real_escape_string($firstname),
+$newnonce = nonce();
+
+$query = sprintf("INSERT INTO cr_requests (nonce,owner,title,description,imageid,instancetype,mincount,maxcount,begins,duration,includes) ",
+    mysql_real_escape_string($newnonce),
+    mysql_real_escape_string($owner),
+    mysql_real_escape_string($title),
+    mysql_real_escape_string($description),
+    mysql_real_escape_string($imageid),
     mysql_real_escape_string($lastname));
 
-// Perform Query
 $result = mysql_query($query);
 */
-
 ?>
