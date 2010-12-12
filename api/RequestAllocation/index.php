@@ -64,6 +64,8 @@ if ($begins = @$_POST['begins'])
   if ($begins = strtotime($begins)) {
     if ($begins < time())
       return_error("Reservation must begin in the future.");
+    else
+      $begins = date("Y-m-d H:i:s", $begins);
   } else {
     return_error("Reservation start time must be a time or blank.");
   }
@@ -82,19 +84,24 @@ if (strlen($includes = trim(@$_POST['includes'])))
       return_error("Boot script must be an URL (line $lineno).");
 
 // Validation finished.
-// Insert request into database.
 
-/*
 $newnonce = nonce();
 
-$query = sprintf("INSERT INTO cr_requests (nonce,owner,title,description,imageid,instancetype,mincount,maxcount,begins,duration,includes) ",
+// Insert request into database.
+
+$query = sprintf("INSERT INTO cr_requests (nonce,owner,title,description,imageid,instancetype,mincount,maxcount,begins,duration,includes) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
     mysql_real_escape_string($newnonce),
     mysql_real_escape_string($owner),
     mysql_real_escape_string($title),
     mysql_real_escape_string($description),
     mysql_real_escape_string($imageid),
-    mysql_real_escape_string($lastname));
+    mysql_real_escape_string($instancetype),
+    mysql_real_escape_string($mincount),
+    mysql_real_escape_string($maxcount),
+    mysql_real_escape_string($begins),
+    mysql_real_escape_string($duration),
+    mysql_real_escape_string($includes)
+);
 
 $result = mysql_query($query);
-*/
 ?>
