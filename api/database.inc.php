@@ -17,11 +17,12 @@ mysql_query("CREATE TABLE IF NOT EXISTS cr_requests (
       title VARCHAR(256),
       description VARCHAR(512),
       imageid VARCHAR(32),
+      instancetype VARCHAR(16),
       mincount SMALLINT,
       maxcount SMALLINT,
-      instancetype VARCHAR(16),
       begins DATETIME,
-      duration MEDIUMINT
+      duration MEDIUMINT,
+      includes TEXT
     );");
 mysql_query("CREATE TABLE IF NOT EXISTS cr_confirmations (
       request_id INT NOT NULL PRIMARY KEY,
