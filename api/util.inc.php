@@ -1,4 +1,10 @@
 <?php 
+
+function nonce() {
+    require_once 'config.inc.php';
+    return substr(hash("sha256", uniqid(CR_SALT . @$_SERVER['REMOTE_ADDR'])), 0, 25);
+}
+
 function glue_url($parsed) { 
     if (!is_array($parsed)) { 
         return false; 
@@ -19,5 +25,9 @@ function glue_url($parsed) {
 
     return $uri; 
 } 
-?>
 
+function print_error($message) {
+  die("<b>Error:</b> $message");
+}
+
+?>

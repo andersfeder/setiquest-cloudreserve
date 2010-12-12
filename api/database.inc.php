@@ -11,6 +11,7 @@ mysql_select_db($cr_db_database)
 // Create tables if they don't already exist
 mysql_query("CREATE TABLE IF NOT EXISTS cr_requests (
       id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      nonce CHAR(25),
       owner VARCHAR(256),
       time TIMESTAMP(8),
       title VARCHAR(256),
@@ -18,10 +19,15 @@ mysql_query("CREATE TABLE IF NOT EXISTS cr_requests (
       imageid VARCHAR(32),
       mincount SMALLINT,
       maxcount SMALLINT,
-      publickey VARCHAR(512),
       instancetype VARCHAR(16),
       begins DATETIME,
-      ends DATETIME
+      duration MEDIUMINT
+    );");
+mysql_query("CREATE TABLE IF NOT EXISTS cr_confirmations (
+      request_id INT NOT NULL PRIMARY KEY,
+      time TIMESTAMP(8),
+      publickey VARCHAR(512),
+      FOREIGN KEY (request_id) REFERENCES cr_requests(id) ON DELETE CASCADE
     );");
 mysql_query("CREATE TABLE IF NOT EXISTS cr_approvals (
       request_id INT NOT NULL PRIMARY KEY,

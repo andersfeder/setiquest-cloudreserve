@@ -1,5 +1,7 @@
 <?php
 
+require_once 'api/util.inc.php';
+
 // URL for API return/callback.
 define("CR_UI_REQUEST_RETURNURL", "http://" . $_SERVER['HTTP_HOST']  . dirname($_SERVER['PHP_SELF']) . "/return.php");
 
@@ -12,6 +14,7 @@ define("CR_UI_REQUEST_RETURNURL", "http://" . $_SERVER['HTTP_HOST']  . dirname($
     <h3>Request reservation</h3>
     <form method="POST" action="api/RequestAllocation/">
       <input type="hidden" name="return" value="<?php echo CR_UI_REQUEST_RETURNURL ?>">
+      <input type="hidden" name="nonce" value="<?php echo nonce() ?>">
       Your e-mail address: <input type="text" name="owner"/><br>
       Request title: <input type="text" name="title"><br>
       Request description:<br>

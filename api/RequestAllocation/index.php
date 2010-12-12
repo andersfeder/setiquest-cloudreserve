@@ -3,24 +3,23 @@
 require_once "../util.inc.php";
 require_once "../database.inc.php";
 
-function print_error($message) {
-  die("<b>Error:</b> $message");
-}
-
 if ($return_url = @$_POST['return']) {
   if (filter_var($return_url, FILTER_VALIDATE_URL)) {
     function return_error($message) {
+      global $return_url;
       $components = parse_url($return_url);
-      $components['query'] .= "&message=$message";
+      $nonce = @$_POST['nonce'];
+      $components['query'] .= "&nonce=$nonce&message=$message";
       $return_url = glue_url($components);
-      die($return_url);
+      header("Location: $return_url");
+      die();
     }
   } else {
     print_error("Invalid return URL.");
   }
 } else {
   function return_error($message) {
-    print_error($message);
+    print_error("$message");
   }
 }
 
@@ -61,14 +60,21 @@ if (($maxcount = @$_POST['maxcount']) < $mincount)
 if ($maxcount > 20)
   return_error("Maximum number of instances must not exceed 20.");
 
-if (($begins = strtotime(@$_POST['begins'])) < time())
-  if (!(@$_POST['begins']))
-    $begins = "";
-  else
-    return_error("Reservation must begin in the future.");
+if ($begins = @$_POST['begins'])
+  if ($begins = strtotime($begins)) {
+    if ($begins < time())
+      return_error("Reservation must begin in the future.");
+  } else {
+    return_error("Reservation must be a time or blank.");
+  }
 
-if (($ends = $begins + @$_POST['duration'] * 60) < $begins)
-  return_error("Reservation must end after it has begun.");
+if (strlen($duration = @$_POST['duration']))
+  if (is_int($duration+0)) {
+    if (($ends = $begins + $duration * 60) <= $begins)
+      return_error("Reservation must end after it has begun.");
+  } else {
+    return_error("Reservation duration must be a integer or blank.");
+  }
 
 echo "Validated.";
 
@@ -80,4 +86,5 @@ $query = sprintf("INSERT INTO cr_requests (owner,) ",
 // Perform Query
 $result = mysql_query($query);
 */
+
 ?>
