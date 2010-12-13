@@ -12,6 +12,9 @@ define('CR_DB_USERNAME', 'cloudreserve');
 define('CR_DB_PASSWORD', '');
 define('CR_DB_DATABASE', 'cloudreserve');
 
+// E-mail settings
+define('CR_EMAIL_FROM', CR_ROOT_ADMIN);
+
 // Path: AWS SDK for PHP
 define('CR_PATH_AWSSDK', 'AWSSDKforPHP/');
 

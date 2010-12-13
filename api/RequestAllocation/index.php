@@ -1,5 +1,6 @@
 <?php
 
+require_once "../config.inc.php";
 require_once "../util.inc.php";
 require_once "../database.inc.php";
 
@@ -81,27 +82,63 @@ if (strlen($duration = @$_POST['duration']))
 if (strlen($includes = trim(@$_POST['includes'])))
   foreach (explode("\n", $includes) as $lineno => $line)
     if (!filter_var(trim($line), FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED & FILTER_FLAG_HOST_REQUIRED))
-      return_error("Boot script must be an URL (line $lineno).");
+      return_error("Boot script must be an URL (line " . $lineno + 1 . ").");
 
 // Validation finished.
 
 $newnonce = nonce();
+$beginss = empty($begins) ? 'NULL': "'$begins'";
 
 // Insert request into database.
 
-$query = sprintf("INSERT INTO cr_requests (nonce,owner,title,description,imageid,instancetype,mincount,maxcount,begins,duration,includes) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-    mysql_real_escape_string($newnonce),
+$query = sprintf("INSERT INTO cr_requests (nonce,owner,title,description,imageid,instancetype,mincount,maxcount,begins,duration,includes) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s')",
+    $newnonce,
     mysql_real_escape_string($owner),
     mysql_real_escape_string($title),
     mysql_real_escape_string($description),
     mysql_real_escape_string($imageid),
     mysql_real_escape_string($instancetype),
-    mysql_real_escape_string($mincount),
-    mysql_real_escape_string($maxcount),
-    mysql_real_escape_string($begins),
-    mysql_real_escape_string($duration),
+    $mincount,
+    $maxcount,
+    $beginss,
+    $duration,
     mysql_real_escape_string($includes)
 );
 
-$result = mysql_query($query);
+if (!mysql_query($query))
+  return_error("Could not insert request in database.");
+
+// Send confirmation e-mail to request owner.
+$confirmurl = 
+
+$result = mail(
+  $owner,
+  "Confirm reservation request".($begins ? ": $begins" : ""),
+  "A request to reserve resources in the cloud has been registered from your e-mail address.
+
+  Title: $title
+  Description: $description
+  VM image ID: $imageid
+  Instance type: $instancetype
+  Min. instances: $mincount
+  Max. instances: $maxcount
+  Start time: $begins
+  Duration: $duration
+  Boot scripts:
+  $includes
+  
+  To confirm that you have registered this request, please visit this page:
+  http://" . $_SERVER['HTTP_HOST']  . dirname(dirname(dirname($_SERVER['PHP_SELF']))) . "/confirm.php?nonce=$newnonce
+
+  If you did not order this request, you can safely ignore this e-mail; we apologize for the inconvenience.
+  
+  Best regards,
+  The Administrators",
+  "From: noreply@noreply.com"
+);
+if (!$result)
+  return_error("Could not send confirmation e-mail.");
+else
+  die("A confirmation message for this request has been sent to your e-mail address.");
+
 ?>
