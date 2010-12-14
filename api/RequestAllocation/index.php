@@ -86,13 +86,13 @@ if (strlen($includes = trim(@$_POST['includes'])))
 
 // Validation finished.
 
-$newnonce = nonce();
+$id = nonce();
 $beginss = empty($begins) ? 'NULL': "'$begins'";
 
 // Insert request into database.
 
-$query = sprintf("INSERT INTO cr_requests (nonce,owner,title,description,imageid,instancetype,mincount,maxcount,begins,duration,includes) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s')",
-    $newnonce,
+$query = sprintf("INSERT INTO cr_requests (id,owner,title,description,imageid,instancetype,mincount,maxcount,begins,duration,includes) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s')",
+    $id,
     mysql_real_escape_string($owner),
     mysql_real_escape_string($title),
     mysql_real_escape_string($description),
@@ -128,13 +128,16 @@ $result = mail(
   $includes
   
   To confirm that you have registered this request, please visit this page:
-  http://" . $_SERVER['HTTP_HOST']  . dirname(dirname(dirname($_SERVER['PHP_SELF']))) . "/confirm.php?nonce=$newnonce
+  http://" . $_SERVER['HTTP_HOST']  . dirname(dirname(dirname($_SERVER['PHP_SELF']))) . "/confirm.php?id=$id
 
   If you did not order this request, you can safely ignore this e-mail; we apologize for the inconvenience.
   
   Best regards,
   The Administrators",
-  "From: noreply@noreply.com"
+  "Reply-To: " . CR_EMAIL_REPLYTO . "\n" .
+  "Return-Path: " . CR_EMAIL_REPLYTO . "\n" .
+  "Message-ID: <".$now." TheSystem@".$_SERVER['SERVER_NAME'].">\n" .
+  "X-Mailer: PHP v" . phpversion() . "\n"
 );
 if (!$result)
   return_error("Could not send confirmation e-mail.");

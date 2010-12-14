@@ -2,7 +2,7 @@
 
 require_once "api/database.inc.php";
 
-$result = mysql_query("SELECT * FROM cr_requests WHERE nonce='" . $_GET['nonce'] . "'");
+$result = mysql_query("SELECT * FROM cr_requests WHERE id='" . $_GET['id'] . "'");
 $request = mysql_fetch_assoc($result);
 
 ?>
@@ -13,6 +13,7 @@ $request = mysql_fetch_assoc($result);
   <body>
     <h3>Confirm reservation request</h3>
     <form method="POST" action="api/ConfirmRequest/">
+      <input type="hidden" name="id" value="<?php echo $request['id'] ?>">
       Your e-mail address: <?php echo $request['owner'] ?><br>
       Request title: <?php echo $request['title'] ?><br>
       Request description:<br>
@@ -22,9 +23,10 @@ $request = mysql_fetch_assoc($result);
       Number of instances, minimum: <?php echo $request['mincount'] ?><br>
       Number of instances, maximum: <?php echo $request['maxcount'] ?><br>
       Reservation start time: <?php echo $request['begins'] ?></br>
-      Reservation end time: <?php echo $request['duration'] ?></br>
+      Reservation duration: <?php echo $request['duration'] ?> minutes.</br>
       Enter your public key (for SSH access):<br>
       <textarea name="publickey"></textarea><br>
+      <input type="checkbox" name="launch" value="true" checked> Launch requested instances immediately when reservation begins.<br>
       <input type="submit" name="action" value="Confirm">
       <input type="submit" name="action" value="Cancel">
     </form>
