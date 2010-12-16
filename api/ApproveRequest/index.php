@@ -8,7 +8,8 @@ require_once "../mail.inc.php";
 $query = "SELECT * FROM cr_requests,cr_confirmations WHERE cr_confirmations.confirmation_id='" . $_POST['id'] . "' AND cr_requests.request_id=cr_confirmations.request_id";
 if (!($result = mysql_query($query)))
   die("Could not retrieve request from database.");
-$request = mysql_fetch_assoc($result);
+if (!($request = mysql_fetch_assoc($result)))
+  die("Request not found in database.");
 
 switch ($_POST['action']) {
   case 'Approve':

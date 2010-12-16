@@ -9,7 +9,8 @@ switch ($_POST['action']) {
   case 'Confirm':
     if (!($result = mysql_query("SELECT * FROM cr_requests WHERE request_id='" . $_POST['id'] . "'")))
       die("Could not retrieve request from database.");
-    $request = mysql_fetch_assoc($result);
+    if (!($request = mysql_fetch_assoc($result)))
+      die("Request not found in database.");
 
     // TODO: Validate input.
     $publickey = $_POST['publickey'];
