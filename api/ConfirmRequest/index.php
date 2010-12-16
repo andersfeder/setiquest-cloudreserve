@@ -56,7 +56,7 @@ The Administrators"
     }
     break;
   case 'Cancel':
-    if (!mysql_query("DELETE FROM cr_requests WHERE cr_request='" . mysql_real_escape_string($_POST['id']) . "'"))
+    if (!mysql_query("DELETE FROM cr_requests WHERE request_id='" . mysql_real_escape_string($_POST['id']) . "'"))
       die("Could not delete request from database.");
     else
       die("The request was cancelled.");
