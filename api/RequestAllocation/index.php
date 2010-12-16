@@ -94,6 +94,7 @@ $beginss = empty($begins) ? 'NULL': "'$begins'";
 
 $query = sprintf("INSERT INTO cr_requests (request_id,owner,title,description,imageid,instancetype,mincount,maxcount,begins,duration,includes) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s')",
     $id,
+    mysql_real_escape_string($_POST['nonce']),
     mysql_real_escape_string($owner),
     mysql_real_escape_string($title),
     mysql_real_escape_string($description),
