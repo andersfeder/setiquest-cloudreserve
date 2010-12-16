@@ -57,10 +57,12 @@ The Administrators"
     }
     break;
   case 'Deny':
-    if (!mysql_query("DELETE FROM cr_requests WHERE cr_requests.request_id = cr_confirmations.request_id AND cr_confirmations.confirmation_id='" . mysql_real_escape_string($_POST['id']) . "'"))
+    $query = "DELETE FROM cr_requests WHERE request_id='".$request['request_id']."'";
+    if (!mysql_query($query))
       die("Could not delete request from database.");
     else
-      die("The request was denied.");
+      die("The request was deleted from the database.");
+    //TODO: Mail rejection notice to request author.
     break;
 }
 
