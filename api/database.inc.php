@@ -104,7 +104,7 @@ function cr_dbadd_instances($session_id, $maxcount) {
         $query = sprintf("SELECT COUNT(cr_instances.instance_id) FROM cr_instances,cr_sessions WHERE cr_sessions.approval_id='%s' AND cr_instances.session_id=cr_sessions.session_id",
           $session['approval_id']
         );
-        if ($row = mysql_fetch_assoc(mysql_query($query)) && $row['COUNT(cr_instances.instance_id)'] < 20) {
+        if ($row = mysql_fetch_assoc(mysql_query($query)) && $row['COUNT(cr_instances.instance_id)'] < $session['maxcount']) {
           $query = sprintf("INSERT INTO cr_instances (instance_id, session_id) VALUES ('%s','%s')",
             $instance_id = nonce(),
             $session['session_id']
