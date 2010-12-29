@@ -14,13 +14,11 @@ switch ($_POST['action']) {
 
     // TODO: Validate input.
     $publickey = $_POST['publickey'];
-    $launch = (boolean)$_POST['launch'];
 
-    $query = sprintf("INSERT INTO cr_confirmations (confirmation_id,request_id,publickey,launch) VALUES ('%s','%s','%s','%s')",
+    $query = sprintf("INSERT INTO cr_confirmations (confirmation_id,request_id,publickey) VALUES ('%s','%s','%s')",
         $id = nonce(),
         mysql_real_escape_string($_POST['id']),
-        mysql_real_escape_string($publickey),
-        $launch
+        mysql_real_escape_string($publickey)
       );
     if (!mysql_query($query)) {
       die("Could not insert confirmation in database.");

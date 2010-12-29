@@ -26,6 +26,10 @@ function glue_url($parsed) {
     return $uri; 
 } 
 
+function strbegins($str, $sub) {
+    return (strncmp($str, $sub, strlen($sub)) == 0);
+}
+
 function print_error($message) {
   die("<b>Error:</b> $message");
 }

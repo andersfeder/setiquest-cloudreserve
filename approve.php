@@ -27,6 +27,8 @@ else
       Number of instances, maximum: <?php echo $request['maxcount'] ?><br>
       Reservation start time: <?php echo $request['begins'] ?></br>
       Reservation duration: <?php echo $request['duration'] ?> minutes.</br>
+      Boot scripts:<br>
+      <?php echo $request['includes'] ?><br>
       Public key (for SSH access):<br>
       <?php echo $request['publickey'] ?><br>
       Launch requested instances immediately when reservation begins: <?php echo $request['launch'] ?><br>

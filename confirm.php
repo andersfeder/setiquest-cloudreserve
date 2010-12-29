@@ -24,9 +24,10 @@ $request = mysql_fetch_assoc($result);
       Number of instances, maximum: <?php echo $request['maxcount'] ?><br>
       Reservation start time: <?php echo $request['begins'] ?></br>
       Reservation duration: <?php echo $request['duration'] ?> minutes</br>
+      Boot scripts:<br>
+      <?php echo $request['includes'] ?><br>
       Enter your public key (for SSH access):<br>
       <textarea name="publickey"></textarea><br>
-      <input type="checkbox" name="launch" value="true" checked> Launch requested instances immediately when reservation begins.<br>
       <input type="submit" name="action" value="Confirm">
       <input type="submit" name="action" value="Cancel">
     </form>

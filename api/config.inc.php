@@ -13,8 +13,8 @@ define('CR_DB_PASSWORD', '');
 define('CR_DB_DATABASE', 'cloudreserve');
 
 // Mailer settings
-define('CR_MAILER_URL', '')
-define('CR_MAILER_KEY', '')
+define('CR_MAILER_URL', '');
+define('CR_MAILER_KEY', '');
 
 // E-mail settings
 define('CR_EMAIL_FROM', CR_ROOT_ADMIN);
